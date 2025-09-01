@@ -100,12 +100,12 @@ class _LoginPageState extends State<LoginPage> {
       onPressed: () {
         if (_formKey.currentState!.validate()) {
           Navigator.pushReplacementNamed(context, 'AccountPage');
-        },
+        }
       },
       style: ElevatedButton.styleFrom(
           backgroundColor: primaryColor,
-          padding: const EdgeInsets.symetric(horizontal: 80, vertical: 15),
-          shape: RoundedRectangleBorder(BorderRadius.circular(30)),
+          padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
         ),
       child: const Text('Login',
       style: TextStyle(color: Colors.white, fontSize: 18),
