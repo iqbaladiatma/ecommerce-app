@@ -5,6 +5,7 @@ import 'pages/login_page.dart';
 import 'pages/account_page.dart';
 import 'pages/register_page.dart';
 import 'pages/cart_page.dart';
+import 'pages/list_chat.dart';
 import 'providers/cart_provider.dart';
 
 void main() {
@@ -27,6 +28,8 @@ class MyApp extends StatelessWidget {
           '/login': (context) => const LoginPage(),
           '/account': (context) => const AccountPage(),
           '/cart': (context) => const CartPage(),
+          '/chats': (context) => const ListChatPage(),
+          '/chat-detail': (context) => const DetailChatPage(chatId: ''),
         },
         builder: (context, child) {
           return WillPopScope(

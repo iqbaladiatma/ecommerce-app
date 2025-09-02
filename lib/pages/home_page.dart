@@ -5,6 +5,7 @@ import '../widgets/CategoriesWidget.dart';
 import '../widgets/ItemsWidget.dart';
 import 'cart_page.dart';
 import 'account_page.dart';
+import 'list_chat.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,6 +21,7 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [
     const HomePageContent(),
     const CartPage(),
+    const ListChatPage(),
     const AccountPage(),
   ];
 
@@ -64,6 +66,7 @@ class _HomePageState extends State<HomePage> {
       items: const [
         Icon(Icons.home_outlined, size: 30, color: Colors.white),
         Icon(Icons.shopping_cart_outlined, size: 30, color: Colors.white),
+        Icon(Icons.chat_bubble_outline, size: 30, color: Colors.white),
         Icon(Icons.person_outline, size: 30, color: Colors.white),
       ],
       onTap: (index) {
