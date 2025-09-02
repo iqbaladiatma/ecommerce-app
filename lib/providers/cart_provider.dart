@@ -1,41 +1,7 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import '../models/cart_item.dart' as models;
 
-class CartItem {
-  final String id;
-  final String productId;
-  final String title;
-  final int quantity;
-  final double price;
-  final String imageUrl;
-
-  CartItem({
-    required this.id,
-    required this.productId,
-    required this.title,
-    required this.quantity,
-    required this.price,
-    required this.imageUrl,
-  });
-
-  CartItem copyWith({
-    String? id,
-    String? productId,
-    String? title,
-    int? quantity,
-    double? price,
-    String? imageUrl,
-  }) {
-    return CartItem(
-      id: id ?? this.id,
-      productId: productId ?? this.productId,
-      title: title ?? this.title,
-      quantity: quantity ?? this.quantity,
-      price: price ?? this.price,
-      imageUrl: imageUrl ?? this.imageUrl,
-    );
-  }
-}
+typedef CartItem = models.CartItem;
 
 class CartProvider with ChangeNotifier {
   final Map<String, CartItem> _items = {};
@@ -56,7 +22,7 @@ class CartProvider with ChangeNotifier {
     return total;
   }
 
-  void addItem(String productId, double price, String title, String imageUrl) {
+  void addItem(String productId, String title, double price, String imageUrl) {
     if (_items.containsKey(productId)) {
       _items.update(
         productId,
@@ -77,6 +43,39 @@ class CartProvider with ChangeNotifier {
         ),
       );
     }
+    notifyListeners();
+  }
+  
+  void increaseQuantity(String productId) {
+    if (_items.containsKey(productId)) {
+      _items.update(
+        productId,
+        (existingCartItem) => existingCartItem.copyWith(
+          quantity: existingCartItem.quantity + 1,
+        ),
+      );
+      notifyListeners();
+    }
+  }
+  
+  void decreaseQuantity(String productId) {
+    if (_items.containsKey(productId)) {
+      if (_items[productId]!.quantity > 1) {
+        _items.update(
+          productId,
+          (existingCartItem) => existingCartItem.copyWith(
+            quantity: existingCartItem.quantity - 1,
+          ),
+        );
+      } else {
+        _items.remove(productId);
+      }
+      notifyListeners();
+    }
+  }
+  
+  void clearCart() {
+    _items.clear();
     notifyListeners();
   }
 

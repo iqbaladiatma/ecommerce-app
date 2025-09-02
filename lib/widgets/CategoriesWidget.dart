@@ -4,11 +4,11 @@ class CategoriesWidget extends StatelessWidget {
   const CategoriesWidget({super.key});
 
   final List<Map<String, dynamic>> categories = const [
-    {'icon': Icons.sports_soccer, 'name': 'Soccer'},
-    {'icon': Icons.directions_run, 'name': 'Running'},
-    {'icon': Icons.sports_basketball, 'name': 'Basketball'},
-    {'icon': Icons.fitness_center, 'name': 'Training'},
-    {'icon': Icons.sports_tennis, 'name': 'Tennis'},
+    {'icon': Icons.phone_android, 'name': 'HP'},
+    {'icon': Icons.computer, 'name': 'Teknologi'},
+    {'icon': Icons.weekend, 'name': 'Perabotan'},
+    {'icon': Icons.restaurant, 'name': 'Makanan'},
+    {'icon': Icons.sports_soccer, 'name': 'Olahraga'},
   ];
 
   @override
@@ -19,44 +19,54 @@ class CategoriesWidget extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemCount: categories.length,
         itemBuilder: (context, index) {
-          return Container(
-            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.3),
-                  spreadRadius: 1,
-                  blurRadius: 5,
-                  offset: const Offset(0, 3),
-                ),
-              ],
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF4C53A5).withOpacity(0.1),
-                    shape: BoxShape.circle,
+          return GestureDetector(
+            onTap: () {},
+            child: Container(
+              width: 90,
+              margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+              padding: const EdgeInsets.all(10),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.2),
+                    spreadRadius: 1,
+                    blurRadius: 5,
+                    offset: const Offset(0, 2),
                   ),
-                  child: Icon(
-                    categories[index]['icon'],
-                    size: 30,
-                    color: const Color(0xFF4C53A5),
+                ],
+              ),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Container(
+                    width: 50,
+                    height: 50,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF4C53A5).withOpacity(0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      categories[index]['icon'],
+                      size: 25,
+                      color: const Color(0xFF4C53A5),
+                    ),
                   ),
-                ),
-                Text(
-                  categories[index]['name'],
-                  style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF4C53A5),
+                  const SizedBox(height: 5),
+                  Text(
+                    categories[index]['name'],
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF4C53A5),
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           );
         },

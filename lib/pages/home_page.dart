@@ -25,13 +25,32 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: PageView(
-        controller: _pageController,
-        physics: const NeverScrollableScrollPhysics(),
-        children: _pages,
+    return WillPopScope(
+      onWillPop: () async {
+        // If not on the home page, go to home page
+        if (_selectedIndex != 0) {
+          setState(() {
+            _selectedIndex = 0;
+            _pageController.jumpToPage(0);
+          });
+          return false; // Prevent default back behavior
+        }
+        // If on home page, allow default back behavior (exit app)
+        return true;
+      },
+      child: Scaffold(
+        body: PageView(
+          controller: _pageController,
+          physics: const NeverScrollableScrollPhysics(),
+          children: _pages,
+          onPageChanged: (index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+          },
+        ),
+        bottomNavigationBar: _buildCurvedNavigationBar(),
       ),
-      bottomNavigationBar: _buildCurvedNavigationBar(),
     );
   }
 

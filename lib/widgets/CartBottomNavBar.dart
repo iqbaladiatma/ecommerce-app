@@ -12,12 +12,13 @@ class CartBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BottomAppBar(
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-        height: 130,
+    return Container(
+      color: Colors.white,
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: SafeArea(
+        top: false,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -26,32 +27,33 @@ class CartBottomNavBar extends StatelessWidget {
                   'Total:',
                   style: TextStyle(
                     color: Color(0xFF4C53A5),
-                    fontSize: 22,
+                    fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
                   '\$${total.toStringAsFixed(2)}',
                   style: const TextStyle(
-                    fontSize: 25,
+                    fontSize: 22,
                     fontWeight: FontWeight.bold,
                     color: Color(0xFF4C53A5),
                   ),
                 ),
               ],
             ),
+            const SizedBox(height: 10),
             Container(
-              alignment: Alignment.center,
+              width: double.infinity,
               height: 50,
               decoration: BoxDecoration(
                 color: const Color(0xFF4C53A5),
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.5),
+                    color: Colors.grey.withOpacity(0.3),
                     spreadRadius: 1,
-                    blurRadius: 10,
-                    offset: const Offset(0, 3),
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
                   ),
                 ],
               ),
@@ -59,25 +61,15 @@ class CartBottomNavBar extends StatelessWidget {
                 color: Colors.transparent,
                 child: InkWell(
                   onTap: onCheckout,
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          'Check Out',
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
-                        Icon(
-                          Icons.arrow_forward_ios,
-                          color: Colors.white,
-                          size: 22,
-                        ),
-                      ],
+                  borderRadius: BorderRadius.circular(20),
+                  child: const Center(
+                    child: Text(
+                      'Checkout',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),

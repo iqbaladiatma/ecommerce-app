@@ -1,9 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'change_password_page.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage({super.key});
+  
+  // Dummy user data
+  static const Map<String, String> _dummyUser = {
+    'name': 'Iqbal Store',
+    'email': 'iqbal.store@example.com',
+    'phone': '+62 123 4567 890',
+    'address': 'Jl. Contoh No. 123, Kota Anda',
+    'joinDate': 'Member since 2024',
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +28,9 @@ class AccountPage extends StatelessWidget {
           title: const Text(
             'My Account',
             style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 22,
+              fontWeight: FontWeight.w600,
+              fontSize: 20,
+              color: Colors.white,
               shadows: [
                 Shadow(
                   color: Colors.black26,
@@ -41,159 +52,199 @@ class AccountPage extends StatelessWidget {
               ),
             ),
           ),
-          leading: Container(
-            margin: const EdgeInsets.all(8),
-            decoration: BoxDecoration(
-              color: Colors.white24,
-              borderRadius: BorderRadius.circular(10),
-            ),
-            child: IconButton(
-              icon: const Icon(Icons.arrow_back_ios_new, size: 20),
-              onPressed: () => Navigator.pop(context),
-            ),
-          ),
         ),
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [Color(0xFF4C53A5), Color(0xFFF5F5F5)],
-            stops: [0.2, 0.2],
-          ),
-        ),
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
+        body: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const SizedBox(height: 20),
-              _buildProfileSection(),
-              const SizedBox(height: 20),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: _buildSettingsSection(context),
+              // Gradient header background
+              Container(
+                height: 160,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [Color(0xFF4C53A5), Color(0xFF3A3F7E)],
+                  ),
+                ),
               ),
-              const SizedBox(height: 20),
-              _buildLogoutButton(context),
-              const SizedBox(height: 20),
+              // Main content
+              Transform.translate(
+                offset: const Offset(0, -40),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // Profile section
+                      _buildProfileSection(),
+                      const SizedBox(height: 24),
+                      // Settings section
+                      _buildSettingsSection(context),
+                      const SizedBox(height: 24),
+                      // Logout button
+                      _buildLogoutButton(context),
+                      const SizedBox(height: 40),
+                    ],
+                  ),
+                ),
+              ),
             ],
           ),
         ),
-      ),
       ),
     );
   }
 
   Widget _buildProfileSection() {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            spreadRadius: 1,
+            color: Colors.black.withOpacity(0.05),
             blurRadius: 10,
-            offset: const Offset(0, 5),
+            offset: const Offset(0, 4),
           ),
         ],
       ),
-      padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 20),
+      child: Column(
+        children: [
+          _buildProfileHeader(),
+          const SizedBox(height: 16),
+          // User name
+          Text(
+            _dummyUser['name']!,
+            style: const TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF333333),
+            ),
+          ),
+          const SizedBox(height: 4),
+          // User email
+          Text(
+            _dummyUser['email']!,
+            style: TextStyle(
+              fontSize: 14,
+              color: Colors.grey[600],
+            ),
+          ),
+          const SizedBox(height: 8),
+          // Member since
+          Text(
+            _dummyUser['joinDate']!,
+            style: TextStyle(
+              fontSize: 13,
+              color: Colors.grey[500],
+              fontStyle: FontStyle.italic,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildProfileHeader() {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+      decoration: BoxDecoration(
+        color: const Color(0xFF4C53A5),
+        borderRadius: const BorderRadius.only(
+          bottomLeft: Radius.circular(30),
+          bottomRight: Radius.circular(30),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 15,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(3),
+            width: 90,
+            height: 90,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              border: Border.all(
-                color: Colors.white,
-                width: 2,
-              ),
+              border: Border.all(color: Colors.white, width: 3),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  blurRadius: 10,
+                  offset: const Offset(0, 5),
+                ),
+              ],
             ),
-            child: Stack(
-              children: [
-                ClipOval(
-                  child: Image.asset(
-                    'assets/images/profile_avatar.png',
-                    width: 80,
-                    height: 80,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) => Container(
-                      width: 80,
-                      height: 80,
-                      color: const Color(0xFF4C53A5).withOpacity(0.1),
-                      child: const Icon(
-                        Icons.person,
-                        size: 40,
-                        color: Color(0xFF4C53A5),
-                      ),
+            child: ClipOval(
+              child: CachedNetworkImage(
+                imageUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80',
+                fit: BoxFit.cover,
+                placeholder: (context, url) => Container(
+                  color: Colors.grey[200],
+                  child: const Center(
+                    child: CircularProgressIndicator(
+                      color: Color(0xFF4C53A5),
+                      strokeWidth: 2,
                     ),
                   ),
                 ),
-                Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: Container(
-                    padding: const EdgeInsets.all(4),
-                    decoration: const BoxDecoration(
+                errorWidget: (context, url, error) => Container(
+                  color: Colors.grey[200],
+                  child: const Icon(
+                    Icons.store,
+                    size: 40,
+                    color: Color(0xFF4C53A5),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(width: 20),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Iqbal Store',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  _dummyUser['email']!,
+                  style: TextStyle(
+                    color: Colors.white.withOpacity(0.9),
+                    fontSize: 14,
+                  ),
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 8),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: const Text(
+                    'Toko Online Terpercaya',
+                    style: TextStyle(
                       color: Colors.white,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Container(
-                      padding: const EdgeInsets.all(6),
-                      decoration: const BoxDecoration(
-                        color: Color(0xFF4C53A5),
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.camera_alt,
-                        size: 16,
-                        color: Colors.white,
-                      ),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
               ],
             ),
-          ),
-          const SizedBox(width: 20),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Muhammad Iqbal',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF333333),
-                ),
-              ),
-              const SizedBox(height: 4),
-              const Text(
-                'iqbal@example.com',
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 14,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF4C53A5).withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: const Text(
-                  'Premium Member',
-                  style: TextStyle(
-                    color: Color(0xFF4C53A5),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ],
           ),
         ],
       ),
@@ -206,57 +257,51 @@ class AccountPage extends StatelessWidget {
     required String title,
     required VoidCallback onTap,
   }) {
-    return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(15),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 5,
-            offset: const Offset(0, 2),
-          ),
-        ],
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(
+          color: Colors.grey[200]!,
+          width: 1,
+        ),
       ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(15),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF4C53A5).withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Icon(
-                    icon,
-                    color: const Color(0xFF4C53A5),
-                    size: 22,
-                  ),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+          child: Row(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF4C53A5).withOpacity(0.1),
+                  shape: BoxShape.circle,
                 ),
-                const SizedBox(width: 16),
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w500,
-                    color: Color(0xFF333333),
-                  ),
+                child: Icon(
+                  icon,
+                  color: const Color(0xFF4C53A5),
+                  size: 22,
                 ),
-                const Spacer(),
-                const Icon(
-                  Icons.arrow_forward_ios,
-                  size: 16,
-                  color: Colors.grey,
+              ),
+              const SizedBox(width: 16),
+              Text(
+                title,
+                style: const TextStyle(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w500,
+                  color: Color(0xFF333333),
                 ),
-              ],
-            ),
+              ),
+              const Spacer(),
+              const Icon(
+                Icons.arrow_forward_ios,
+                size: 16,
+                color: Colors.grey,
+              ),
+            ],
           ),
         ),
       ),
@@ -264,60 +309,118 @@ class AccountPage extends StatelessWidget {
   }
 
   Widget _buildSettingsSection(BuildContext context) {
-    return Column(
-      children: [
-        _buildSettingItem(
-          context,
-          icon: Icons.person_outline,
-          title: 'Edit Profile',
-          onTap: () {
-            // Navigate to Edit Profile
-          },
-        ),
-        _buildSettingItem(
-          context,
-          icon: Icons.shopping_bag_outlined,
-          title: 'My Orders',
-          onTap: () {
-            // Navigate to My Orders
-          },
-        ),
-        _buildSettingItem(
-          context,
-          icon: Icons.location_on_outlined,
-          title: 'Shipping Address',
-          onTap: () {
-            // Navigate to Shipping Address
-          },
-        ),
-        _buildSettingItem(
-          context,
-          icon: Icons.credit_card_outlined,
-          title: 'Payment Methods',
-          onTap: () {
-            // Navigate to Payment Methods
-          },
-        ),
-        _buildSettingItem(
-          context,
-          icon: Icons.lock_outline,
-          title: 'Change Password',
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const ChangePasswordPage(),
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(15),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(left: 8, bottom: 8),
+            child: Text(
+              'Settings',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: Color(0xFF4C53A5),
               ),
-            );
-          },
+            ),
+          ),
+          _buildSettingItem(
+            context,
+            icon: Icons.person_outline,
+            title: 'Personal Information',
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: const Text('Personal Information'),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _buildInfoRow('Name', _dummyUser['name']!),
+                      const SizedBox(height: 12),
+                      _buildInfoRow('Email', _dummyUser['email']!),
+                      const SizedBox(height: 12),
+                      _buildInfoRow('Phone', _dummyUser['phone']!),
+                      const SizedBox(height: 12),
+                      _buildInfoRow('Address', _dummyUser['address']!),
+                    ],
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text('Close'),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+          _buildSettingItem(
+            context,
+            icon: Icons.lock_outline,
+            title: 'Change Password',
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ChangePasswordPage(),
+                ),
+              );
+            },
+          ),
+          _buildSettingItem(
+            context,
+            icon: Icons.notifications_outlined,
+            title: 'Notifications',
+            onTap: () {
+              // Handle notifications tap
+            },
+          ),
+          _buildSettingItem(
+            context,
+            icon: Icons.help_outline,
+            title: 'Help & Support',
+            onTap: () {
+              // Handle help & support tap
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInfoRow(String label, String value) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: const TextStyle(
+            fontSize: 12,
+            color: Colors.grey,
+            fontWeight: FontWeight.w500,
+          ),
         ),
-        _buildSettingItem(
-          context,
-          icon: Icons.settings_outlined,
-          title: 'Settings',
-          onTap: () {
-            // Navigate to Settings
-          },
+        const SizedBox(height: 4),
+        Text(
+          value,
+          style: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w500,
+          ),
         ),
       ],
     );
@@ -325,37 +428,32 @@ class AccountPage extends StatelessWidget {
 
   Widget _buildLogoutButton(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.red.withOpacity(0.2),
-              blurRadius: 10,
-              offset: const Offset(0, 4),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: ElevatedButton(
+        onPressed: () => _showLogoutDialog(context),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.red[50],
+          foregroundColor: Colors.red,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+            side: BorderSide(color: Colors.red[300]!),
+          ),
+          elevation: 0,
+        ),
+        child: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.logout, size: 20),
+            SizedBox(width: 8),
+            Text(
+              'Logout',
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ],
-        ),
-        child: ElevatedButton(
-          onPressed: () => _showLogoutDialog(context),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white,
-            foregroundColor: Colors.red,
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
-              side: BorderSide(color: Colors.red.shade100, width: 1.5),
-            ),
-            elevation: 0,
-          ),
-          child: const Text(
-            'Logout',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
         ),
       ),
     );
@@ -364,106 +462,91 @@ class AccountPage extends StatelessWidget {
   void _showLogoutDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          title: Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.red.shade50,
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  Icons.logout,
-                  size: 32,
-                  color: Colors.red.shade700,
-                ),
-              ),
-              const SizedBox(height: 16),
-              const Text(
-                'Logout',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF333333),
-                ),
-              ),
-            ],
-          ),
-          content: const Text(
-            'Are you sure you want to logout?',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 15,
-              color: Colors.grey,
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              style: TextButton.styleFrom(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: const Text(
-                'Cancel',
-                style: TextStyle(
-                  color: Colors.grey,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text('Logout Successful'),
-                    backgroundColor: Colors.green,
-                    behavior: SnackBarBehavior.floating,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                    margin: EdgeInsets.all(20),
-                  ),
-                );
-                
-                // Delay navigation to show the snackbar
-                Future.delayed(const Duration(seconds: 2), () {
-                  Navigator.pushNamedAndRemoveUntil(
-                    context,
-                    '/loginPage',
-                    (route) => false,
-                  );
-                });
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFF4C53A5),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                elevation: 0,
-              ),
-              child: const Text(
-                'Yes, Logout',
-                style: TextStyle(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                ),
-              ),
-            ),
+      builder: (BuildContext dialogContext) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15),
+        ),
+        title: const Row(
+          children: [
+            Icon(Icons.logout, color: Colors.red),
+            SizedBox(width: 10),
+            Text('Logout'),
           ],
-        );
-      },
+        ),
+        content: const Text(
+          'Are you sure you want to logout?',
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 15,
+            color: Colors.grey,
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(dialogContext).pop(),
+            style: TextButton.styleFrom(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            child: const Text(
+              'Cancel',
+              style: TextStyle(
+                color: Colors.grey,
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () async {
+              // Close the dialog first
+              Navigator.of(dialogContext).pop();
+              
+              // Show success message
+              final scaffoldMessenger = ScaffoldMessenger.of(context);
+              scaffoldMessenger.showSnackBar(
+                const SnackBar(
+                  content: Text('Logout Successful'),
+                  backgroundColor: Colors.green,
+                  behavior: SnackBarBehavior.floating,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
+                  margin: EdgeInsets.all(20),
+                  duration: Duration(seconds: 2),
+                ),
+              );
+              
+              // Wait for the snackbar to be shown
+              await Future.delayed(const Duration(seconds: 2));
+              
+              // Navigate to login page and remove all previous routes
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                '/login',
+                (route) => false,
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFF4C53A5),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+              elevation: 0,
+            ),
+            child: const Text(
+              'Yes, Logout',
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

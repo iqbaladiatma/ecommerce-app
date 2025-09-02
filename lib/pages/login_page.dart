@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
 const primaryColor = Color(0xFF4C53A5);
+const secondaryColor = Color(0xFF3A3F7E);
+const backgroundColor = Colors.white;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -10,43 +14,120 @@ class LoginPage extends StatefulWidget {
 
 
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  bool _obscurePassword = true;
+  late AnimationController _animationController;
+  late Animation<double> _fadeAnimation;
+  late Animation<Offset> _slideAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1000),
+    );
+
+    _fadeAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: const Interval(0.0, 0.6, curve: Curves.easeInOut),
+      ),
+    );
+
+    _slideAnimation = Tween<Offset>(
+      begin: const Offset(0, 0.3),
+      end: Offset.zero,
+    ).animate(
+      CurvedAnimation(
+        parent: _animationController,
+        curve: Curves.easeOutQuart,
+      ),
+    );
+
+    _animationController.forward();
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(10),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                _buildHeader(),
-                const SizedBox(height: 20),
-                _buildEmailField(),
-                const SizedBox(height: 20),
-                _buildPasswordField(),
-                const SizedBox(height: 20),
-                _buildLoginButton(),
-              ],
+      backgroundColor: backgroundColor,
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.light.copyWith(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.dark,
+        ),
+        child: SafeArea(
+          child: Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 20),
+              child: FadeTransition(
+                opacity: _fadeAnimation,
+                child: SlideTransition(
+                  position: _slideAnimation,
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _buildLogo(),
+                        const SizedBox(height: 30),
+                        _buildHeader(),
+                        const SizedBox(height: 30),
+                        _buildEmailField(),
+                        const SizedBox(height: 16),
+                        _buildPasswordField(),
+                        const SizedBox(height: 24),
+                        _buildLoginButton(),
+                        const SizedBox(height: 20),
+                        _buildRegisterButton(),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ),
           ),
         ),
-      )
+      ),
     );
   }
+  Widget _buildLogo() {
+    return Container(
+      width: 120,
+      height: 120,
+      decoration: BoxDecoration(
+        color: primaryColor.withOpacity(0.1),
+        shape: BoxShape.circle,
+      ),
+      child: const Icon(
+        Icons.shopping_bag_rounded,
+        size: 60,
+        color: primaryColor,
+      ),
+    );
+  }
+
   Widget _buildHeader() {
-    return const Column(
+    return Column(
       children: [
-        Text(
+        const Text(
           'Welcome Back!',
           style: TextStyle(
-            fontSize: 32,
+            fontSize: 28,
             fontWeight: FontWeight.bold,
             color: primaryColor,
+            letterSpacing: 0.5,
           ),
         ),
         SizedBox(height: 10),
@@ -60,17 +141,42 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildEmailField() {
     return TextFormField(
       controller: _emailController,
+      keyboardType: TextInputType.emailAddress,
+      style: const TextStyle(fontSize: 16),
       decoration: InputDecoration(
         labelText: 'Email',
-        prefixIcon: const Icon(Icons.email, color: primaryColor,),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+        labelStyle: const TextStyle(color: Colors.grey),
+        prefixIcon: const Icon(Icons.email, color: primaryColor),
+        filled: true,
+        fillColor: Colors.grey[50],
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.grey[300]!),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.grey[300]!),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: primaryColor, width: 2),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Colors.red, width: 1.5),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Colors.red, width: 1.5),
+        ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
           return 'Please enter your email';
         }
-        if (!RegExp(r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$").hasMatch(value)) {
-          return 'Format email tidak valid';
+        if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+          return 'Please enter a valid email address';
         }
         return null;
       },
@@ -79,47 +185,133 @@ class _LoginPageState extends State<LoginPage> {
   Widget _buildPasswordField() {
     return TextFormField(
       controller: _passwordController,
+      obscureText: _obscurePassword,
+      style: const TextStyle(fontSize: 16),
       decoration: InputDecoration(
         labelText: 'Password',
-        prefixIcon: const Icon(Icons.lock, color: primaryColor,),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+        labelStyle: const TextStyle(color: Colors.grey),
+        prefixIcon: const Icon(Icons.lock, color: primaryColor),
+        suffixIcon: IconButton(
+          icon: Icon(
+            _obscurePassword ? Icons.visibility_off : Icons.visibility,
+            color: Colors.grey[600],
+          ),
+          onPressed: () {
+            setState(() {
+              _obscurePassword = !_obscurePassword;
+            });
+          },
+        ),
+        filled: true,
+        fillColor: Colors.grey[50],
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.grey[300]!),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.grey[300]!),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: primaryColor, width: 2),
+        ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Colors.red, width: 1.5),
+        ),
+        focusedErrorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: Colors.red, width: 1.5),
+        ),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
-          return 'Password tidak boleh kosong';
+          return 'Please enter your password';
         }
         if (value.length < 6) {
-          return 'Password harus 6 karakter';
+          return 'Password must be at least 6 characters';
         }
         return null;
       },
     );
   }
   Widget _buildLoginButton() {
-    return ElevatedButton(
-      onPressed: () {
-        if (_formKey.currentState!.validate()) {
-          Navigator.pushReplacementNamed(context, 'AccountPage');
-        }
-      },
-      style: ElevatedButton.styleFrom(
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: () {
+          if (_formKey.currentState!.validate()) {
+            // Show loading indicator
+            showDialog(
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return const Center(
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(primaryColor),
+                  ),
+                );
+              },
+            );
+            
+            // Simulate API call delay
+            Future.delayed(const Duration(seconds: 1), () {
+              // Navigate to home page after successful login
+              Navigator.of(context).pop(); // Remove loading dialog
+              Navigator.pushReplacementNamed(context, '/');
+            });
+          }
+        },
+        style: ElevatedButton.styleFrom(
           backgroundColor: primaryColor,
-          padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 15),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+          elevation: 2,
+          shadowColor: primaryColor.withOpacity(0.3),
         ),
-      child: const Text('Login',
-      style: TextStyle(color: Colors.white, fontSize: 18),
+        child: const Text(
+          'Login',
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 0.5,
+          ),
+        ),
       ),
     );
   }
+
   Widget _buildRegisterButton() {
-    return TextButton(
-      onPressed: () {
-        Navigator.pushNamed(context, '/');
-      },
-      child: const Text('Don\'t have an account? Register',
-      style: TextStyle(color: primaryColor),
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text(
+          'Don\'t have an account? ',
+          style: TextStyle(
+            color: Colors.grey,
+            fontSize: 14,
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            // Navigate to register page
+            Navigator.pushNamed(context, '/register');
+          },
+          child: const Text(
+            'Register',
+            style: TextStyle(
+              color: primaryColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 14,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
