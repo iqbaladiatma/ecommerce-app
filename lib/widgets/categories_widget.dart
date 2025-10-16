@@ -30,7 +30,7 @@ class CategoriesWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(15),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
+                    color: Colors.grey.withValues(alpha: 0.2),
                     spreadRadius: 1,
                     blurRadius: 5,
                     offset: const Offset(0, 2),
@@ -44,7 +44,7 @@ class CategoriesWidget extends StatelessWidget {
                     width: 50,
                     height: 50,
                     decoration: BoxDecoration(
-                      color: const Color(0xFF4C53A5).withOpacity(0.1),
+                      color: const Color(0xFF4C53A5).withValues(alpha: 0.1),
                       shape: BoxShape.circle,
                     ),
                     child: Icon(

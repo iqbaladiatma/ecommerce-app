@@ -12,9 +12,8 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
-
-
-class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixin {
+class _LoginPageState extends State<LoginPage>
+    with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -38,15 +37,13 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
       ),
     );
 
-    _slideAnimation = Tween<Offset>(
-      begin: const Offset(0, 0.3),
-      end: Offset.zero,
-    ).animate(
-      CurvedAnimation(
-        parent: _animationController,
-        curve: Curves.easeOutQuart,
-      ),
-    );
+    _slideAnimation =
+        Tween<Offset>(begin: const Offset(0, 0.3), end: Offset.zero).animate(
+          CurvedAnimation(
+            parent: _animationController,
+            curve: Curves.easeOutQuart,
+          ),
+        );
 
     _animationController.forward();
   }
@@ -58,6 +55,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
     _passwordController.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,7 +68,10 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
         child: SafeArea(
           child: Center(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 20),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 24.0,
+                vertical: 20,
+              ),
               child: FadeTransition(
                 opacity: _fadeAnimation,
                 child: SlideTransition(
@@ -102,12 +103,13 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
       ),
     );
   }
+
   Widget _buildLogo() {
     return Container(
       width: 120,
       height: 120,
       decoration: BoxDecoration(
-        color: primaryColor.withOpacity(0.1),
+        color: primaryColor.withValues(alpha: 0.1),
         shape: BoxShape.circle,
       ),
       child: const Icon(
@@ -138,6 +140,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
       ],
     );
   }
+
   Widget _buildEmailField() {
     return TextFormField(
       controller: _emailController,
@@ -169,7 +172,10 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: Colors.red, width: 1.5),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 16,
+        ),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -182,6 +188,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
       },
     );
   }
+
   Widget _buildPasswordField() {
     return TextFormField(
       controller: _passwordController,
@@ -224,7 +231,10 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
           borderRadius: BorderRadius.circular(12),
           borderSide: const BorderSide(color: Colors.red, width: 1.5),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 16,
+        ),
       ),
       validator: (value) {
         if (value == null || value.isEmpty) {
@@ -237,6 +247,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
       },
     );
   }
+
   Widget _buildLoginButton() {
     return SizedBox(
       width: double.infinity,
@@ -255,9 +266,12 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                 );
               },
             );
-            
+
             // Simulate API call delay
             Future.delayed(const Duration(seconds: 1), () {
+              // Check if widget is still mounted before using context
+              if (!mounted) return;
+
               // Navigate to home page after successful login
               Navigator.of(context).pop(); // Remove loading dialog
               Navigator.pushReplacementNamed(context, '/');
@@ -271,7 +285,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
             borderRadius: BorderRadius.circular(12),
           ),
           elevation: 2,
-          shadowColor: primaryColor.withOpacity(0.3),
+          shadowColor: primaryColor.withValues(alpha: 0.3),
         ),
         child: const Text(
           'Login',
@@ -292,10 +306,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
       children: [
         const Text(
           'Don\'t have an account? ',
-          style: TextStyle(
-            color: Colors.grey,
-            fontSize: 14,
-          ),
+          style: TextStyle(color: Colors.grey, fontSize: 14),
         ),
         GestureDetector(
           onTap: () {

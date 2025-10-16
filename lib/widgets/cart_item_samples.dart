@@ -4,7 +4,7 @@ import '../providers/cart_provider.dart';
 import 'cart_item_card.dart';
 
 class CartItemSamples extends StatelessWidget {
-  const CartItemSamples({Key? key}) : super(key: key);
+  const CartItemSamples({super.key});
 
   @override
   Widget build(BuildContext context) {

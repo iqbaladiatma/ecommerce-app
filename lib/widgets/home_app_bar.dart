@@ -21,7 +21,7 @@ class HomeAppBar extends StatelessWidget {
               border: Border.all(color: Colors.white, width: 2),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.1),
+                  color: Colors.black.withValues(alpha: 0.1),
                   spreadRadius: 1,
                   blurRadius: 5,
                   offset: const Offset(0, 2),
@@ -30,33 +30,28 @@ class HomeAppBar extends StatelessWidget {
             ),
             child: ClipOval(
               child: CachedNetworkImage(
-                imageUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80',
+                imageUrl:
+                    'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80',
                 fit: BoxFit.cover,
                 placeholder: (context, url) => const CircularProgressIndicator(
                   color: Colors.white,
                   strokeWidth: 2,
                 ),
-                errorWidget: (context, url, error) => const Icon(
-                  Icons.person,
-                  color: Colors.white,
-                  size: 30,
-                ),
+                errorWidget: (context, url, error) =>
+                    const Icon(Icons.person, color: Colors.white, size: 30),
               ),
             ),
           ),
-          
+
           const SizedBox(width: 15),
-          
+
           // Welcome Text
           const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 'Selamat Datang di',
-                style: TextStyle(
-                  color: Colors.white70,
-                  fontSize: 14,
-                ),
+                style: TextStyle(color: Colors.white70, fontSize: 14),
               ),
               SizedBox(height: 2),
               Text(
@@ -70,9 +65,9 @@ class HomeAppBar extends StatelessWidget {
               ),
             ],
           ),
-          
+
           const Spacer(),
-          
+
           // Notification Badge
           badges.Badge(
             badgeStyle: const badges.BadgeStyle(
@@ -91,7 +86,7 @@ class HomeAppBar extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(8),
               decoration: BoxDecoration(
-                color: Colors.white.withOpacity(0.2),
+                color: Colors.white.withValues(alpha: 0.2),
                 shape: BoxShape.circle,
               ),
               child: const Icon(

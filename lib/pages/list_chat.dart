@@ -73,7 +73,10 @@ class _ListChatPageState extends State<ListChatPage> {
         children: [
           // Filter Buttons
           Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            padding: const EdgeInsets.symmetric(
+              vertical: 8.0,
+              horizontal: 16.0,
+            ),
             child: Row(
               children: [
                 _buildFilterButton('Semua', true),
@@ -82,7 +85,7 @@ class _ListChatPageState extends State<ListChatPage> {
               ],
             ),
           ),
-          
+
           // Chat List
           Expanded(
             child: ListView.builder(
@@ -153,10 +156,7 @@ class _ListChatPageState extends State<ListChatPage> {
       ),
       trailing: Text(
         chat.time,
-        style: TextStyle(
-          color: Colors.grey[600],
-          fontSize: 12,
-        ),
+        style: TextStyle(color: Colors.grey[600], fontSize: 12),
       ),
       onTap: () {
         Navigator.push(
@@ -188,7 +188,7 @@ class Message {
 
 class DetailChatPage extends StatefulWidget {
   final String chatId;
-  
+
   const DetailChatPage({super.key, required this.chatId});
 
   @override
@@ -198,7 +198,7 @@ class DetailChatPage extends StatefulWidget {
 class _DetailChatPageState extends State<DetailChatPage> {
   final TextEditingController _messageController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-  
+
   // Dummy chat data
   final List<Message> _messages = [
     Message(
@@ -226,7 +226,7 @@ class _DetailChatPageState extends State<DetailChatPage> {
 
   void _sendMessage() {
     if (_messageController.text.trim().isEmpty) return;
-    
+
     setState(() {
       _messages.add(
         Message(
@@ -239,7 +239,7 @@ class _DetailChatPageState extends State<DetailChatPage> {
       );
       _messageController.clear();
     });
-    
+
     // Auto scroll to bottom
     _scrollToBottom();
   }
@@ -285,7 +285,7 @@ class _DetailChatPageState extends State<DetailChatPage> {
                 color: Colors.green,
                 shape: BoxShape.circle,
               ),
-            )
+            ),
           ],
         ),
         actions: [
@@ -311,7 +311,7 @@ class _DetailChatPageState extends State<DetailChatPage> {
               },
             ),
           ),
-          
+
           // Input area
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -319,7 +319,7 @@ class _DetailChatPageState extends State<DetailChatPage> {
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.2),
+                  color: Colors.grey.withValues(alpha: 0.2),
                   spreadRadius: 1,
                   blurRadius: 3,
                   offset: const Offset(0, -1),
@@ -330,12 +330,15 @@ class _DetailChatPageState extends State<DetailChatPage> {
               children: [
                 // Emoji button
                 IconButton(
-                  icon: const Icon(Icons.emoji_emotions_outlined, color: Colors.grey),
+                  icon: const Icon(
+                    Icons.emoji_emotions_outlined,
+                    color: Colors.grey,
+                  ),
                   onPressed: () {
                     // TODO: Implement emoji picker
                   },
                 ),
-                
+
                 // Message input
                 Expanded(
                   child: TextField(
@@ -348,14 +351,17 @@ class _DetailChatPageState extends State<DetailChatPage> {
                       ),
                       filled: true,
                       fillColor: Colors.grey[200],
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                        vertical: 8,
+                      ),
                     ),
                     textCapitalization: TextCapitalization.sentences,
                     maxLines: null,
                     onSubmitted: (_) => _sendMessage(),
                   ),
                 ),
-                
+
                 // Send button
                 IconButton(
                   icon: const Icon(Icons.send, color: Color(0xFF4C53A5)),
@@ -371,20 +377,23 @@ class _DetailChatPageState extends State<DetailChatPage> {
 
   Widget _buildMessageBubble(Message message) {
     final isMe = message.isMe;
-    
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
-        mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
+        mainAxisAlignment: isMe
+            ? MainAxisAlignment.end
+            : MainAxisAlignment.start,
         children: [
-          if (!isMe) ...[  // Avatar for received messages
+          if (!isMe) ...[
+            // Avatar for received messages
             const CircleAvatar(
               backgroundImage: AssetImage('assets/images/avatar1.png'),
               radius: 16,
             ),
             const SizedBox(width: 8),
           ],
-          
+
           // Message bubble
           Flexible(
             child: Container(
@@ -419,7 +428,9 @@ class _DetailChatPageState extends State<DetailChatPage> {
                         Icon(
                           message.isRead ? Icons.done_all : Icons.done,
                           size: 14,
-                          color: message.isRead ? Colors.blue[200] : Colors.white70,
+                          color: message.isRead
+                              ? Colors.blue[200]
+                              : Colors.white70,
                         ),
                       ],
                     ],

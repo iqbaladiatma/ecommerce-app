@@ -20,25 +20,22 @@ class CartAppBar extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 boxShadow: [
                   BoxShadow(
-                    color: const Color(0xFF000000).withOpacity(0.1),
+                    color: const Color(0xFF000000).withValues(alpha: 0.1),
                     blurRadius: 5,
                     spreadRadius: 1,
-                  )
+                  ),
                 ],
               ),
               child: const Icon(Icons.arrow_back, size: 24),
             ),
           ),
-          
+
           // Title
           const Text(
             'My Cart',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          
+
           // Cart icon with badge
           Stack(
             children: [
@@ -49,10 +46,10 @@ class CartAppBar extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFF000000).withOpacity(0.1),
+                      color: const Color(0xFF000000).withValues(alpha: 0.1),
                       blurRadius: 5,
                       spreadRadius: 1,
-                    )
+                    ),
                   ],
                 ),
                 child: const Icon(Icons.shopping_cart_outlined, size: 24),
@@ -72,10 +69,7 @@ class CartAppBar extends StatelessWidget {
                   ),
                   child: const Text(
                     '0',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                    ),
+                    style: TextStyle(color: Colors.white, fontSize: 12),
                     textAlign: TextAlign.center,
                   ),
                 ),
@@ -106,7 +100,7 @@ class ChartPage extends StatelessWidget {
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.3),
+              color: Colors.grey.withValues(alpha: 0.3),
               blurRadius: 10,
               offset: const Offset(0, -5),
             ),
@@ -117,10 +111,7 @@ class ChartPage extends StatelessWidget {
           children: [
             const Text(
               'Total: \$0.00',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             ElevatedButton(
               onPressed: () {
@@ -128,17 +119,17 @@ class ChartPage extends StatelessWidget {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 30,
+                  vertical: 15,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
               child: const Text(
                 'Checkout',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                ),
+                style: TextStyle(color: Colors.white, fontSize: 16),
               ),
             ),
           ],

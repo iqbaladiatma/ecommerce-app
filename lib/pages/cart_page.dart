@@ -1,32 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../widgets/CartItemSamples.dart';
+import '../widgets/cart_item_samples.dart';
 import '../providers/cart_provider.dart';
 
-class CartPage extends StatefulWidget {
+class CartPage extends StatelessWidget {
   const CartPage({super.key});
-
-  @override
-  State<CartPage> createState() => _CartPageState();
-}
-
-class _CartPageState extends State<CartPage> {
 
   @override
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
     final totalAmount = cartProvider.totalAmount;
     final itemCount = cartProvider.itemCount;
-    
+
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
       appBar: AppBar(
         title: const Text(
           'Keranjang Belanja',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-          ),
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
         ),
         centerTitle: true,
         elevation: 0,
@@ -62,7 +53,10 @@ class _CartPageState extends State<CartPage> {
                   },
                   style: TextButton.styleFrom(
                     foregroundColor: Colors.red,
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20),
                     ),
@@ -74,7 +68,7 @@ class _CartPageState extends State<CartPage> {
             ),
           ),
           const SizedBox(height: 4),
-          
+
           // Cart Items
           Expanded(
             child: Container(
@@ -94,7 +88,7 @@ class _CartPageState extends State<CartPage> {
               ),
             ),
           ),
-                    
+
           // Order Summary
           if (itemCount > 0) ...[
             Container(
@@ -110,14 +104,21 @@ class _CartPageState extends State<CartPage> {
                 children: [
                   // Voucher Input
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 4,
+                    ),
                     decoration: BoxDecoration(
                       color: Colors.grey[100],
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Row(
                       children: [
-                        Icon(Icons.local_offer_outlined, size: 20, color: Colors.grey[600]),
+                        Icon(
+                          Icons.local_offer_outlined,
+                          size: 20,
+                          color: Colors.grey[600],
+                        ),
                         const SizedBox(width: 8),
                         const Expanded(
                           child: TextField(
@@ -133,13 +134,18 @@ class _CartPageState extends State<CartPage> {
                         TextButton(
                           onPressed: () {},
                           style: TextButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 6,
+                            ),
                             minimumSize: Size.zero,
                             tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(15),
                             ),
-                            backgroundColor: const Color(0xFF4C53A5).withOpacity(0.1),
+                            backgroundColor: const Color(
+                              0xFF4C53A5,
+                            ).withValues(alpha: 0.1),
                           ),
                           child: const Text(
                             'Pakai',
@@ -160,16 +166,10 @@ class _CartPageState extends State<CartPage> {
                     children: [
                       Text(
                         'Subtotal ($itemCount ${itemCount <= 1 ? 'barang' : 'barang'})',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[600],
-                        ),
+                        style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                       ),
                       Text(
-                        'Rp${totalAmount.toStringAsFixed(0).replaceAllMapped(
-                          RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-                          (match) => '${match[1]}.',
-                        )}',
+                        'Rp${totalAmount.toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (match) => '${match[1]}.')}',
                         style: const TextStyle(
                           fontSize: 14,
                           fontWeight: FontWeight.w600,
@@ -183,10 +183,7 @@ class _CartPageState extends State<CartPage> {
                     children: [
                       Text(
                         'Ongkos Kirim',
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.grey[600],
-                        ),
+                        style: TextStyle(fontSize: 14, color: Colors.grey[600]),
                       ),
                       Text(
                         'Rp10.000',
@@ -210,10 +207,7 @@ class _CartPageState extends State<CartPage> {
                         ),
                       ),
                       Text(
-                        'Rp${(totalAmount + 10000).toStringAsFixed(0).replaceAllMapped(
-                          RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-                          (match) => '${match[1]}.',
-                        )}',
+                        'Rp${(totalAmount + 10000).toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (match) => '${match[1]}.')}',
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -232,7 +226,7 @@ class _CartPageState extends State<CartPage> {
                 color: Colors.white,
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
+                    color: Colors.grey.withValues(alpha: 0.5),
                     blurRadius: 10,
                     offset: const Offset(0, -2),
                   ),
@@ -264,6 +258,7 @@ class _CartPageState extends State<CartPage> {
                     Text(
                       'Checkout Sekarang',
                       style: TextStyle(
+                        color: Colors.white,
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                       ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import '../widgets/HomeAppBar.dart';
-import '../widgets/CategoriesWidget.dart';
-import '../widgets/ItemsWidget.dart';
+import '../widgets/home_app_bar.dart';
+import '../widgets/categories_widget.dart';
+import '../widgets/items_widget.dart';
 import 'cart_page.dart';
 import 'account_page.dart';
 import 'list_chat.dart';
@@ -27,18 +27,18 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
+    return PopScope(
+      canPop: _selectedIndex == 0,
+      onPopInvoked: (didPop) {
+        if (didPop) return;
+
         // If not on the home page, go to home page
         if (_selectedIndex != 0) {
           setState(() {
             _selectedIndex = 0;
             _pageController.jumpToPage(0);
           });
-          return false; // Prevent default back behavior
         }
-        // If on home page, allow default back behavior (exit app)
-        return true;
       },
       child: Scaffold(
         body: PageView(
@@ -98,10 +98,13 @@ class HomePageContent extends StatelessWidget {
             children: [
               // AppBar
               const HomeAppBar(),
-              
+
               // Search Bar
               Container(
-                margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                margin: const EdgeInsets.symmetric(
+                  horizontal: 15,
+                  vertical: 10,
+                ),
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 height: 50,
                 decoration: BoxDecoration(
@@ -109,7 +112,7 @@ class HomePageContent extends StatelessWidget {
                   borderRadius: BorderRadius.circular(30),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.3),
+                      color: Colors.grey.withValues(alpha: 0.3),
                       spreadRadius: 1,
                       blurRadius: 10,
                       offset: const Offset(0, 3),
@@ -129,17 +132,23 @@ class HomePageContent extends StatelessWidget {
                       ),
                     ),
                     IconButton(
-                      icon: const Icon(Icons.camera_alt_outlined, color: Color(0xFF4C53A5)),
+                      icon: const Icon(
+                        Icons.camera_alt_outlined,
+                        color: Color(0xFF4C53A5),
+                      ),
                       onPressed: () {},
                     ),
                   ],
                 ),
               ),
-              
+
               // Categories
               Container(
                 alignment: Alignment.centerLeft,
-                margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                margin: const EdgeInsets.symmetric(
+                  vertical: 10,
+                  horizontal: 15,
+                ),
                 child: const Text(
                   'Categories',
                   style: TextStyle(
@@ -149,14 +158,17 @@ class HomePageContent extends StatelessWidget {
                   ),
                 ),
               ),
-              
+
               // Categories Widget
               const CategoriesWidget(),
-              
+
               // Best Selling Header
               Container(
                 alignment: Alignment.centerLeft,
-                margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                margin: const EdgeInsets.symmetric(
+                  vertical: 10,
+                  horizontal: 15,
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -169,13 +181,16 @@ class HomePageContent extends StatelessWidget {
                       ),
                     ),
                     IconButton(
-                      icon: const Icon(Icons.filter_list, color: Color(0xFF4C53A5)),
+                      icon: const Icon(
+                        Icons.filter_list,
+                        color: Color(0xFF4C53A5),
+                      ),
                       onPressed: () {},
                     ),
                   ],
                 ),
               ),
-              
+
               // Items Widget
               const ItemsWidget(),
             ],

@@ -41,10 +41,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              const Color(0xFF4C53A5),
-              Colors.grey[100]!,
-            ],
+            colors: [const Color(0xFF4C53A5), Colors.grey[100]!],
             stops: const [0.1, 0.3],
           ),
         ),
@@ -82,21 +79,28 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       controller: _oldPasswordController,
                       label: 'Current Password',
                       obscureText: _obscureOldPassword,
-                      toggleObscure: () => setState(() => _obscureOldPassword = !_obscureOldPassword),
+                      toggleObscure: () => setState(
+                        () => _obscureOldPassword = !_obscureOldPassword,
+                      ),
                     ),
                     const SizedBox(height: 20),
                     _buildPasswordField(
                       controller: _newPasswordController,
                       label: 'New Password',
                       obscureText: _obscureNewPassword,
-                      toggleObscure: () => setState(() => _obscureNewPassword = !_obscureNewPassword),
+                      toggleObscure: () => setState(
+                        () => _obscureNewPassword = !_obscureNewPassword,
+                      ),
                     ),
                     const SizedBox(height: 20),
                     _buildPasswordField(
                       controller: _confirmPasswordController,
                       label: 'Confirm New Password',
                       obscureText: _obscureConfirmPassword,
-                      toggleObscure: () => setState(() => _obscureConfirmPassword = !_obscureConfirmPassword),
+                      toggleObscure: () => setState(
+                        () =>
+                            _obscureConfirmPassword = !_obscureConfirmPassword,
+                      ),
                       validator: (value) {
                         if (value != _newPasswordController.text) {
                           return 'Passwords do not match';
@@ -120,6 +124,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
+                          color: Colors.white,
                         ),
                       ),
                     ),

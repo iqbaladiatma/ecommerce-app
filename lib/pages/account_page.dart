@@ -5,7 +5,7 @@ import 'change_password_page.dart';
 
 class AccountPage extends StatelessWidget {
   const AccountPage({super.key});
-  
+
   // Dummy user data
   static const Map<String, String> _dummyUser = {
     'name': 'Iqbal Store',
@@ -104,7 +104,7 @@ class AccountPage extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -127,10 +127,7 @@ class AccountPage extends StatelessWidget {
           // User email
           Text(
             _dummyUser['email']!,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey[600],
-            ),
+            style: TextStyle(fontSize: 14, color: Colors.grey[600]),
           ),
           const SizedBox(height: 8),
           // Member since
@@ -158,7 +155,7 @@ class AccountPage extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
+            color: Colors.black.withValues(alpha: 0.1),
             blurRadius: 15,
             offset: const Offset(0, 10),
           ),
@@ -174,7 +171,7 @@ class AccountPage extends StatelessWidget {
               border: Border.all(color: Colors.white, width: 3),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
+                  color: Colors.black.withValues(alpha: 0.2),
                   blurRadius: 10,
                   offset: const Offset(0, 5),
                 ),
@@ -182,7 +179,8 @@ class AccountPage extends StatelessWidget {
             ),
             child: ClipOval(
               child: CachedNetworkImage(
-                imageUrl: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80',
+                imageUrl:
+                    'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80',
                 fit: BoxFit.cover,
                 placeholder: (context, url) => Container(
                   color: Colors.grey[200],
@@ -222,16 +220,19 @@ class AccountPage extends StatelessWidget {
                 Text(
                   _dummyUser['email']!,
                   style: TextStyle(
-                    color: Colors.white.withOpacity(0.9),
+                    color: Colors.white.withValues(alpha: 0.9),
                     fontSize: 14,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 8),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 4,
+                  ),
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
+                    color: Colors.white.withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(15),
                   ),
                   child: const Text(
@@ -262,10 +263,7 @@ class AccountPage extends StatelessWidget {
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: BorderSide(
-          color: Colors.grey[200]!,
-          width: 1,
-        ),
+        side: BorderSide(color: Colors.grey[200]!, width: 1),
       ),
       child: InkWell(
         onTap: onTap,
@@ -277,14 +275,10 @@ class AccountPage extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF4C53A5).withOpacity(0.1),
+                  color: const Color(0xFF4C53A5).withValues(alpha: 0.1),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(
-                  icon,
-                  color: const Color(0xFF4C53A5),
-                  size: 22,
-                ),
+                child: Icon(icon, color: const Color(0xFF4C53A5), size: 22),
               ),
               const SizedBox(width: 16),
               Text(
@@ -296,11 +290,7 @@ class AccountPage extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              const Icon(
-                Icons.arrow_forward_ios,
-                size: 16,
-                color: Colors.grey,
-              ),
+              const Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey),
             ],
           ),
         ),
@@ -316,7 +306,7 @@ class AccountPage extends StatelessWidget {
         borderRadius: BorderRadius.circular(15),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -345,18 +335,23 @@ class AccountPage extends StatelessWidget {
                 context: context,
                 builder: (context) => AlertDialog(
                   title: const Text('Personal Information'),
-                  content: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _buildInfoRow('Name', _dummyUser['name']!),
-                      const SizedBox(height: 12),
-                      _buildInfoRow('Email', _dummyUser['email']!),
-                      const SizedBox(height: 12),
-                      _buildInfoRow('Phone', _dummyUser['phone']!),
-                      const SizedBox(height: 12),
-                      _buildInfoRow('Address', _dummyUser['address']!),
-                    ],
+                  content: SizedBox(
+                    width: double.maxFinite,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _buildInfoRow('Name', _dummyUser['name']!),
+                          const SizedBox(height: 12),
+                          _buildInfoRow('Email', _dummyUser['email']!),
+                          const SizedBox(height: 12),
+                          _buildInfoRow('Phone', _dummyUser['phone']!),
+                          const SizedBox(height: 12),
+                          _buildInfoRow('Address', _dummyUser['address']!),
+                        ],
+                      ),
+                    ),
                   ),
                   actions: [
                     TextButton(
@@ -417,10 +412,7 @@ class AccountPage extends StatelessWidget {
         const SizedBox(height: 4),
         Text(
           value,
-          style: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w500,
-          ),
+          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
         ),
       ],
     );
@@ -448,10 +440,7 @@ class AccountPage extends StatelessWidget {
             SizedBox(width: 8),
             Text(
               'Logout',
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
-              ),
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
             ),
           ],
         ),
@@ -463,9 +452,7 @@ class AccountPage extends StatelessWidget {
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         title: const Row(
           children: [
             Icon(Icons.logout, color: Colors.red),
@@ -476,10 +463,7 @@ class AccountPage extends StatelessWidget {
         content: const Text(
           'Are you sure you want to logout?',
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 15,
-            color: Colors.grey,
-          ),
+          style: TextStyle(fontSize: 15, color: Colors.grey),
         ),
         actions: [
           TextButton(
@@ -503,7 +487,10 @@ class AccountPage extends StatelessWidget {
             onPressed: () async {
               // Close the dialog first
               Navigator.of(dialogContext).pop();
-              
+
+              // Check if widget is still mounted before using context
+              if (!context.mounted) return;
+
               // Show success message
               final scaffoldMessenger = ScaffoldMessenger.of(context);
               scaffoldMessenger.showSnackBar(
@@ -518,15 +505,17 @@ class AccountPage extends StatelessWidget {
                   duration: Duration(seconds: 2),
                 ),
               );
-              
+
               // Wait for the snackbar to be shown
               await Future.delayed(const Duration(seconds: 2));
-              
+
+              // Check if widget is still mounted before navigation
+              if (!context.mounted) return;
+
               // Navigate to login page and remove all previous routes
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                '/login',
-                (route) => false,
-              );
+              Navigator.of(
+                context,
+              ).pushNamedAndRemoveUntil('/login', (route) => false);
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF4C53A5),

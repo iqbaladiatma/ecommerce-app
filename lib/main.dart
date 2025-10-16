@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       create: (ctx) => CartProvider(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: '/login',  // Set login as initial route
+        initialRoute: '/login', // Set login as initial route
         routes: {
           '/': (context) => const HomePage(),
           '/register': (context) => const RegisterPage(),
@@ -32,15 +32,19 @@ class MyApp extends StatelessWidget {
           '/chat-detail': (context) => const DetailChatPage(chatId: ''),
         },
         builder: (context, child) {
-          return WillPopScope(
-            onWillPop: () async {
+          return PopScope(
+            canPop: false,
+            onPopInvoked: (didPop) async {
+              if (didPop) return;
+
               // Prevent going back to login if already on login
               if (ModalRoute.of(context)?.settings.name == '/login') {
-                return true; // Allow exit app on back press from login
+                return; // Allow exit app on back press from login
               }
               // For other screens, go back to home
-              Navigator.of(context).pushNamedAndRemoveUntil('/', (route) => false);
-              return false;
+              Navigator.of(
+                context,
+              ).pushNamedAndRemoveUntil('/', (route) => false);
             },
             child: child!,
           );
